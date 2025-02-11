@@ -4,9 +4,7 @@ try:
 except ImportError:
     raise ImportError("Missing Modules, please try installing all dependencies")
 try:
-    import update
-    import upgrade
-    import install
+    import pms
 except ImportError:
     raise ImportError("Something went terrible wrong, Internal modules missing.")
 
