@@ -1,5 +1,5 @@
 try:
-    import egqgsys
+    import sys
 except ImportError:
     raise ImportError("Missing Modules, please try installing all dependencies")
 class UnsupportedOS(Exception):
