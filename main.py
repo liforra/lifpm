@@ -3,6 +3,13 @@ try:
     import shutil
 except ImportError:
     raise ImportError("Missing Modules, please try installing all dependencies")
+try:
+    import update
+    import upgrade
+    import install
+except ImportError:
+    raise ImportError("Something went terrible wrong, Internal modules missing.")
+
 def linux():
     return 0
 def windows():
@@ -23,4 +30,8 @@ elif sys.platform == "linux":
 else:
     raise(OSError("Unsupported Operating System: " + sys.platform))
 installedpms = detect_pms()
-
+try:
+    print(sys.argv[1])
+except IndexError:
+    print('No Argument provided. Exiting....')
+    exit()
