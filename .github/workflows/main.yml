@@ -33,21 +33,21 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           nuitka --standalone --onefile --disable-console main.py
-          ren main.exe main-windows.exe
+          ren main.exe lifpm.exe
 
       - name: Build Executable (Linux)
         if: runner.os == 'Linux'
         run: |
           nuitka --standalone --onefile main.py
-          mv main.bin main-linux
+          mv main.bin lifpm
 
       - name: Upload Executables as Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # ✅ Updated to v4
         with:
           name: built-executables
           path: |
-            main-windows.exe
-            main-linux
+            lifpm.exe
+            lifpm
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -57,5 +57,5 @@ jobs:
           release_name: "Release ${{ github.ref_name }}"
           body: "🚀 Automatically generated release for ${{ github.ref_name }}."
           files: |
-            main-windows.exe
-            main-linux
+            lifpm.exe
+            lifpm
