@@ -15,23 +15,27 @@ _AUTH_TOOLS = {
     "su": None,  # su doesn't require config files
 }
 
+
 def _is_root():
     """Check if the script is running as root."""
     return os.geteuid() == 0
 
+
 def _is_installed(command):
     """Check if a command is installed (exists in PATH)."""
     return shutil.which(command) is not None
+
 
 def _has_config(command):
     """Check if a command has a configuration file."""
     config_path = _AUTH_TOOLS.get(command)
     return config_path and os.path.isfile(config_path)
 
+
 def _is_usable_by_user(command):
     """Check if a command is usable by the current user."""
     user = os.getlogin()
-    
+
     if command == "sudo":
         try:
             sudo_group = grp.getgrnam("sudo").gr_mem
@@ -50,12 +54,14 @@ def _is_usable_by_user(command):
 
     return False
 
+
 def _get_preferred_auth():
     """Find the best available and configured authentication tool."""
     for auth in _AUTH_TOOLS.keys():
         if _is_installed(auth) and (_AUTH_TOOLS[auth] is None or _has_config(auth)):
             return auth
     return None  # No valid auth tool found
+
 
 def _elevate_and_run(command, *args):
     """Try to elevate privileges and run the command."""
@@ -66,6 +72,7 @@ def _elevate_and_run(command, *args):
     else:
         logging.error("No valid authentication tool found to gain root privileges.")
         return False
+
 
 def asroot(command, *args):
     """Run a command as root, escalating privileges if necessary."""
@@ -87,5 +94,5 @@ def asroot(command, *args):
     logging.info(f"Running command as root: {command} {' '.join(args)}")
     return subprocess.run([command, *args]).returncode == 0
 
-__all__ = ["asroot"]
 
+__all__ = ["asroot"]
