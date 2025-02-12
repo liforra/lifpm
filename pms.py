@@ -18,7 +18,8 @@ def pacupdate(package: str == None):
         asroot("pacman", "-Sy", package)
     else:
         asroot("pacman" "-Sy")
-
+def pacremove(package: str):
+    asroot("pacman", "-R", package)
 
 def aptinstall(packman: str):
     asroot("apt", "install", package)

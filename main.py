@@ -41,11 +41,17 @@ def install(package: str, pm: str):
             case "apt":
                 pms.aptinstall(package)
             case _:
-                NotImplementedError(f"Package Manager {pm} not Supported yet.")
+                NotImplementedError(f"Package Manager {pm} not Supported yet for installing.")
     else:
         raise ProgramNotFoundError(pm)
         exit()
-
+def remove(package: str, pm: str):
+    if pm in installedpms:
+        match pm:
+            case "pacman":
+                pm.pacrmeove(package)
+            case _:
+                NotImplementedError(f"Package Manager {pm} not Supported yet for Removing.")
 
 if sys.platform == "win32":
     windows()
@@ -76,6 +82,6 @@ match sys.argv[1]:
     case "upgrade":
         raise NotImplementedError("Coming Soon")
     case "remove":
-        raise NotImplementedError("Coming Soon")
+        remove(pkg, pm)
     case _:
         raise SyntaxError(sys.argv[1] + 'is not a valid subcommand\nValid is "update" "upgrade" "remove"')
