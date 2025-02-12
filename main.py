@@ -33,3 +33,9 @@ try:
 except IndexError:
     print('No Argument provided. Exiting....')
     exit()
+
+pkg = (sys.argv[1].split(':'))[0]
+try:
+    pkg = (sys.argv[1].split(':'))[1]
+except IndexError:
+    if not pkg:
