@@ -33,25 +33,98 @@ def detect_pms():
     return installedpms
 
 
-def install(package: str, pm: str):
+# Detect the installed package managers
+def detect_pms():
+    pms = ["pacman", "apt", "flatpak", "paru", "yay", "snap", "nix", "apk", "dnf", "yum"]
+    installedpms = []
+    for pm in pms:
+        if shutil.which(pm):
+            installedpms.append(pm)
+    return installedpms
+
+
+# Install a package using the specified package manager
+def install(package: str, pm: str):  # Ensure we have the list of installed package managers
     if pm in installedpms:
         match pm:
             case "pacman":
-                pms.pacinstall(package)
+                pacinstall(package)
             case "apt":
-                pms.aptinstall(package)
+                aptinstall(package)
+            case "flatpak":
+                flatpakinstall(package)
+            case "yum":
+                yuminstall(package)
+            case "dnf":
+                dnfinstall(package)
             case _:
-                NotImplementedError(f"Package Manager {pm} not Supported yet for installing.")
+                raise NotImplementedError(f"Package Manager {pm} not supported yet for installing.")
     else:
         raise ProgramNotFoundError(pm)
-        exit()
+
+
+# Remove a package using the specified package manager
 def remove(package: str, pm: str):
+    installedpms = detect_pms()  # Ensure we have the list of installed package managers
     if pm in installedpms:
         match pm:
             case "pacman":
-                pm.pacrmeove(package)
+                pacremove(package)
+            case "apt":
+                aptremove(package)
+            case "flatpak":
+                flatpakremove(package)
+            case "yum":
+                yumremove(package)
+            case "dnf":
+                dnfremove(package)
             case _:
-                NotImplementedError(f"Package Manager {pm} not Supported yet for Removing.")
+                raise NotImplementedError(f"Package Manager {pm} not supported yet for removing.")
+    else:
+        raise ProgramNotFoundError(pm)
+
+
+# Update a package using the specified package manager
+def update(package: str, pm: str):
+    installedpms = detect_pms()  # Ensure we have the list of installed package managers
+    if pm in installedpms:
+        match pm:
+            case "pacman":
+                pacupdate()
+            case "apt":
+                aptupdate()
+            case "flatpak":
+                flatpakupdate()
+            case "yum":
+                yumupdate()
+            case "dnf":
+                dnfupdate()
+            case _:
+                raise NotImplementedError(f"Package Manager {pm} not supported yet for updating.")
+    else:
+        raise ProgramNotFoundError(pm)
+
+
+# Upgrade a package using the specified package manager
+def upgrade(package: str, pm: str):
+    installedpms = detect_pms()  # Ensure we have the list of installed package managers
+    if pm in installedpms:
+        match pm:
+            case "pacman":
+                pacupgrade(package)
+            case "apt":
+                aptupgrade(package)
+            case "flatpak":
+                flatpakupgrade(package)
+            case "yum":
+                yumupgrade(package)
+            case "dnf":
+                dnfupgrade(package)
+            case _:
+                raise NotImplementedError(f"Package Manager {pm} not supported yet for upgrading.")
+    else:
+        raise ProgramNotFoundError(pm)
+
 
 if sys.platform == "win32":
     windows()
@@ -66,22 +139,25 @@ except IndexError:
     print("No Argument provided. Exiting....")
     exit()
 
-pkg = (sys.argv[2].split(":"))[0]
+args = sys.argv[1].split(" ")
+
+pkg = (args[1].split(":"))[0]
 try:
-    pm = (sys.argv[2].split(":"))[1]
+    pm = (sys.argv[1].split(":"))[1]
 except IndexError:
     if not pm:
         raise NotImplementedError("Unfortunetly, search is not implemented yet!")
         exit()
 
-match sys.argv[1]:
+
+match args[0]:
     case "install":
         install(pkg, pm)
     case "update":
-        raise NotImplementedError("Coming Soon")
+        update(pkg, pm)
     case "upgrade":
-        raise NotImplementedError("Coming Soon")
+        upgrade(pkg, pm)
     case "remove":
         remove(pkg, pm)
     case _:
-        raise SyntaxError(sys.argv[1] + 'is not a valid subcommand\nValid is "update" "upgrade" "remove"')
+        raise SyntaxError(sys.argv[1] + ' is not a valid subcommand\nValid is "install", "update", "upgrade", "remove"')
