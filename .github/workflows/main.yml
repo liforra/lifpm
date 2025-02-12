@@ -8,11 +8,8 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    
+    runs-on: ubuntu-latest  # Only runs on Linux
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -25,29 +22,19 @@ jobs:
       - name: Install Nuitka
         run: pip install nuitka
 
-      - name: Install Dependencies (Linux)
-        if: runner.os == 'Linux'
+      - name: Install Dependencies
         run: sudo apt-get install -y gcc g++
 
-      - name: Build Executable (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          nuitka --standalone --onefile --disable-console main.py
-          ren main.exe lifpm.exe
-
-      - name: Build Executable (Linux)
-        if: runner.os == 'Linux'
+      - name: Build Executable
         run: |
           nuitka --standalone --onefile main.py
           mv main.bin lifpm
 
-      - name: Upload Executables as Artifacts
-        uses: actions/upload-artifact@v4  # ✅ Updated to v4
+      - name: Upload Executable as Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: built-executables
-          path: |
-            lifpm.exe
-            lifpm
+          path: lifpm
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -56,6 +43,4 @@ jobs:
           tag_name: ${{ github.ref_name }}
           release_name: "Release ${{ github.ref_name }}"
           body: "🚀 Automatically generated release for ${{ github.ref_name }}."
-          files: |
-            lifpm.exe
-            lifpm
+          files: lifpm
