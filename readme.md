@@ -15,3 +15,6 @@
 - winget Install Upgrade Update Remove
 - Full Windows support including sudo replacement (far future)
 - search functionality
+- Installer
+- Config + Enviroment Variables overriding it + Command line argument overriding it
+- Command line arguements rewrite
