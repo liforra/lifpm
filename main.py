@@ -7,6 +7,7 @@ try:
     import pms
 except ImportError:
     raise ImportError("Something went terrible wrong, Internal modules missing.")
+from update import selfupdate
 # Classes
 
 
@@ -159,5 +160,7 @@ match args[0]:
         upgrade(pkg, pm)
     case "remove":
         remove(pkg, pm)
+    case "selfupdate":
+        selfupdate()
     case _:
         raise SyntaxError(sys.argv[1] + ' is not a valid subcommand\nValid is "install", "update", "upgrade", "remove"')
