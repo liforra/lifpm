@@ -25,9 +25,10 @@ jobs:
       - name: Install Nuitka
         run: pip install nuitka
 
-      - name: Install Dependencies
+      - name: Install Build Dependencies
         run: sudo apt-get install -y gcc g++
-
+      - name: Install Program dependencies
+        run: pip install dynaconf --break-system-packages
       - name: Build Executable
         run: |
           nuitka --standalone --onefile main.py
