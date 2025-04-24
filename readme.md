@@ -1,3 +1,8 @@
+# **IMPORTANT. THIS PROJECT HAS BEEN MOVED TO MY GITEA**
+# **IMPORTANT. THIS PROJECT HAS BEEN MOVED TO MY GITEA**
+# **IMPORTANT. THIS PROJECT HAS BEEN MOVED TO MY GITEA**
+https://gitea.liforra.de/liforra
+
 # The Universal Package Manager
 
 
